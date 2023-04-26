@@ -1,15 +1,44 @@
 <template>
   <aside>
     <fieldset>
+      <label>Screen Size</label>
+      <div>
+        <label>
+          <input
+            type="radio"
+            name="size"
+            value="small"
+            v-bind:checked="screen === 'small'"
+            @change="$store.commit(`updateScreenSize`, $event.target.value)"
+          />
+          <span v-text="'Small (&lt; 768px)'"></span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="size"
+            value="medium"
+            v-bind:checked="screen === 'medium'"
+            @change="$store.commit(`updateScreenSize`, $event.target.value)"
+          />
+          <span v-text="'Medium (&lt; 1024px)'"></span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="size"
+            value="large"
+            v-bind:checked="screen === 'large'"
+            @change="$store.commit(`updateScreenSize`, $event.target.value)"
+          />
+          <span v-text="'Large (>= 1024px)'"></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
       <label for="columns">{{ $t("form.columns") }}</label>
-      <input
-        id="columns"
-        type="number"
-        min="0"
-        max="12"
-        @input="$store.commit(`updateColumns`, $event.target.value)"
-        :value="columns"
-      >
+      <span>{{ columns }}</span>
     </fieldset>
 
     <fieldset>
@@ -21,11 +50,14 @@
         max="12"
         @input="$store.commit(`updateRows`, $event.target.value)"
         :value="rows"
-      >
+      />
     </fieldset>
 
     <fieldset>
-      <label for="columngap">{{ $t("form.columngap") }} <span class="label-extra-info">{{ $t("form.units") }}</span></label>
+      <label for="columngap"
+        >{{ $t("form.columngap") }}
+        <span class="label-extra-info">{{ $t("form.units") }}</span></label
+      >
       <input
         id="columngap"
         type="number"
@@ -33,11 +65,14 @@
         max="50"
         @input="$store.commit(`updateColumnGap`, $event.target.value)"
         :value="columngap"
-      >
+      />
     </fieldset>
 
     <fieldset>
-      <label for="rowgap">{{ $t("form.rowgap") }} <span class="label-extra-info">{{ $t("form.units") }}</span></label>
+      <label for="rowgap"
+        >{{ $t("form.rowgap") }}
+        <span class="label-extra-info">{{ $t("form.units") }}</span></label
+      >
       <input
         id="rowgap"
         type="number"
@@ -45,15 +80,17 @@
         max="50"
         @input="$store.commit(`updateRowGap`, $event.target.value)"
         :value="rowgap"
-      >
+      />
     </fieldset>
 
     <button @click="showCodeModal = true">{{ $t("form.codebutton") }}</button>
-    <button type="reset" @click="$store.commit(`resetGrid`)">{{ $t("form.reset") }}</button>
+    <button type="reset" @click="$store.commit(`resetGrid`)">
+      {{ $t("form.reset") }}
+    </button>
     <app-modal v-if="showCodeModal" @close="showCodeModal = false">
       <h3 slot="header">{{ $t("modal.header.yourcode") }}</h3>
       <div slot="body">
-        <app-code/>
+        <app-code />
       </div>
     </app-modal>
 
@@ -61,7 +98,7 @@
     <app-modal v-if="showExplainModal" @close="showExplainModal = false">
       <h3 slot="header">{{ $t("modal.header.what") }}</h3>
       <div slot="body">
-        <app-explain/>
+        <app-explain />
       </div>
     </app-modal>
   </aside>
@@ -77,41 +114,29 @@ export default {
   components: {
     AppExplain,
     AppModal,
-    AppCode
+    AppCode,
   },
   data() {
     return {
       showCodeModal: false,
-      showExplainModal: false
+      showExplainModal: false,
     };
   },
   computed: {
-    ...mapState(["columngap", "rowgap", "columns", "rows"])
+    ...mapState({
+      screen: (state) => state.screen,
+      columns: (state) => state[state.screen].columns,
+      rows: (state) => state[state.screen].rows,
+      columngap: (state) => state[state.screen].columngap,
+      rowgap: (state) => state[state.screen].rowgap,
+    }),
   },
-  watch: {
-    columns(newVal, oldVal) {
-      let payload = {
-        newVal,
-        oldVal,
-        direction: "colArr"
-      };
-      this.$store.commit("adjustArr", payload);
-    },
-    rows(newVal, oldVal) {
-      let payload = {
-        newVal,
-        oldVal,
-        direction: "rowArr"
-      };
-      this.$store.commit("adjustArr", payload);
-    }
-  }
 };
 </script>
 
 <style lang="scss" scoped>
 aside {
-  margin: 60px 60px;
+  margin: 0 60px 60px 60px;
   font-size: 17px;
   width: 300px;
 }
@@ -126,12 +151,16 @@ aside {
   cursor: pointer;
 }
 
+button {
+  display: block;
+}
+
 @media screen and (max-width: 700px) {
   aside {
     width: 80vw;
     margin: 100px 50px;
   }
-  button[type=reset]{
+  button[type="reset"] {
     margin-left: 20px;
   }
 }

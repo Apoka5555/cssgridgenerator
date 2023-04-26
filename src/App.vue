@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <app-header/>
+    <app-header />
     <section class="container">
-      <app-grid/>
-      <app-form/>
+      <app-grid />
+      <app-form />
     </section>
   </div>
 </template>
@@ -17,11 +17,8 @@ export default {
   components: {
     AppHeader,
     AppGrid,
-    AppForm
+    AppForm,
   },
-  created() {
-    this.$store.commit("initialArrIndex", window.location.search);
-  }
 };
 </script>
 

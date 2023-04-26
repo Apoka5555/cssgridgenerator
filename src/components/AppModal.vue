@@ -21,7 +21,9 @@
             aria-label="Close modal"
             class="modal-button"
             @click="close"
-          >{{ $t("modal.button") }}</button>
+          >
+            {{ $t("modal.button") }}
+          </button>
         </div>
       </div>
     </div>
@@ -34,7 +36,7 @@ import createFocusTrap from "focus-trap";
 export default {
   data() {
     return {
-      focusTrap: null
+      focusTrap: null,
     };
   },
   mounted() {
@@ -56,8 +58,8 @@ export default {
     },
     close() {
       this.$emit("close");
-    }
-  }
+    },
+  },
 };
 </script>
 

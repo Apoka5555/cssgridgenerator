@@ -1,38 +1,14 @@
 <template>
   <main>
-    <section
-      :style="{ gridTemplateColumns: colTemplate, gridTemplateRows: '50px', gridColumnGap: columngap + 'px', gridRowGap: rowgap + 'px' }"
-      class="colunits"
-    >
-      <div v-for="(col, i) in colArr" :key="i">
-        <input
-          v-model.lazy="col.unit"
-          @change="validateunit($event, i, 'col')"
-          :class="[columns > 8 ? widthfull : '']"
-          aria-label="Grid Template Column Measurements"
-        >
-        <div class="errors" v-if="errors.col.indexOf(i) !== -1">{{ $t("grid.realcssunit") }}</div>
-      </div>
-    </section>
-
-    <section
-      :style="{ gridTemplateColumns: '50px', gridTemplateRows: rowTemplate, gridColumnGap: columngap + 'px', gridRowGap: rowgap + 'px' }"
-      class="rowunits"
-    >
-      <div v-for="(row, i) in rowArr" :key="i">
-        <input
-          v-model.lazy="row.unit"
-          @change="validateunit($event, i, 'row')"
-          aria-label="Grid Template Row Measurements"
-        >
-        <div class="errors" v-if="errors.row.indexOf(i) !== -1">{{ $t("grid.realcssunit") }}</div>
-      </div>
-    </section>
-
     <div id="gridcontainer">
       <section
         class="grid"
-        :style="{ gridTemplateColumns: colTemplate, gridTemplateRows: rowTemplate , gridColumnGap: columngap + 'px', gridRowGap: rowgap + 'px' }"
+        :style="{
+          gridTemplateColumns: colTemplate,
+          gridTemplateRows: rowTemplate,
+          gridColumnGap: columngap + 'px',
+          gridRowGap: rowgap + 'px',
+        }"
         @touchstart.prevent="delegatedTouchPlaceChild"
         @touchend.prevent="delegatedTouchPlaceChild"
       >
@@ -48,7 +24,12 @@
 
       <section
         class="grid gridchild"
-        :style="{ gridTemplateColumns: colTemplate, gridTemplateRows: rowTemplate , gridColumnGap: columngap + 'px', gridRowGap: rowgap + 'px' }"
+        :style="{
+          gridTemplateColumns: colTemplate,
+          gridTemplateRows: rowTemplate,
+          gridColumnGap: columngap + 'px',
+          gridRowGap: rowgap + 'px',
+        }"
       >
         <div
           v-for="(child, i) in childarea"
@@ -74,21 +55,22 @@ export default {
       widthfull: "widthfull",
       errors: {
         col: [],
-        row: []
-      }
+        row: [],
+      },
     };
   },
   computed: {
-    ...mapState([
-      "columngap",
-      "rowgap",
-      "colArr",
-      "rowArr",
-      "columns",
-      "rows",
-      "childarea"
-    ]),
-    ...mapGetters(["rowTemplate", "colTemplate", "divNum"])
+    ...mapState({
+      columns: (state) => state[state.screen].columns,
+      rows: (state) => state[state.screen].rows,
+      columngap: (state) => state[state.screen].columngap,
+      rowgap: (state) => state[state.screen].rowgap,
+      colArr: (state) => state[state.screen].colArr,
+      rowArr: (state) => state[state.screen].rowArr,
+      rows: (state) => state[state.screen].rows,
+      childarea: (state) => state[state.screen].childarea,
+    }),
+    ...mapGetters(["rowTemplate", "colTemplate", "divNum"]),
   },
   methods: {
     validateunit(e, i, direction) {
@@ -154,8 +136,8 @@ export default {
     },
     removeChild(index) {
       this.$store.commit("removeChildren", index);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -185,7 +167,7 @@ main {
     position: relative;
     &:before {
       position: absolute;
-      content: ".div" counter(step);
+      content: "item" counter(step);
       display: block;
       padding: 0 5px;
       text-align: center;

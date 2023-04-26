@@ -4,94 +4,36 @@
     <div class="gridcode">
       <button
         role="region"
-        id="toggleShowHtml"
-        aria-live="polite"
-        type="button"
-        class="togglehtml"
-        @click.stop.prevent="toggleHtml"
-      >
-        <template v-if="showHtml">{{ $t("modal.copy.css") }}</template>
-        <template v-else>{{ $t("modal.copy.html") }}</template>
-      </button>
-      <button
-        role="region"
         id="codeCopyStatus"
         aria-live="polite"
         type="button"
         class="copycode"
         @click.stop.prevent="copy"
       >
-        <template v-if="codeWasCopied">{{ $t("modal.copy.clipboardSuccess") }}</template>
+        <template v-if="codeWasCopied">{{
+          $t("modal.copy.clipboardSuccess")
+        }}</template>
         <template v-else>{{ $t("modal.copy.clipboard") }}</template>
       </button>
 
       <div id="code" ref="code">
-        <div v-if="showHtml">
+        <div>
           <p>
-            &lt;<span class="cname">div </span>
-            <span class="cprop">class="parent"</span>&gt;
-            <br>
-            <span v-if="childarea.length > 0">
-              <span v-for="(child, i) in childarea" :key="child">
-                <span class="sp">
-                  &lt;<span class="cname">div</span>
-                  <span class="cprop">&nbsp;class="div{{ i + 1 }}"</span>&gt;
-                  &lt;/<span class="cname">div</span>&gt;
-                </span>
-                <br>
-              </span>
-            </span>
-            <span v-else>
-              <br>
-            </span>
-            &lt;/<span class="cname">div</span>&gt;
-          </p>
-        </div>
-        <div v-else>
-          <p>
-            <span class="cname">.parent</span> {
-            <br>
-            <span class="sp">
-              <span class="ckey">display</span>:
-              <span class="cprop">grid</span>;
-            </span>
-            <br>
-            <span class="sp">
-              <span class="ckey">grid-template-columns</span>:
-              <span class="cprop">{{ colTemplate }}</span>;
-            </span>
-            <br>
-            <span class="sp">
-              <span class="ckey">grid-template-rows</span>:
-              <span class="cprop">{{ rowTemplate }}</span>;
-            </span>
-            <br>
-            <span class="sp">
-              <span class="ckey">grid-column-gap</span>:
-              <span class="cprop">{{ columngap }}px;</span>
-            </span>
-            <br>
-            <span class="sp">
-              <span class="ckey">grid-row-gap</span>:
-              <span class="cprop">{{ rowgap }}px</span>;
-            </span> 
-            <br>}
+            <span class="cname">{{ screen }}Screen</span>
           </p>
           <p>
             <span v-if="childarea.length > 0">
-              <span v-for="(child, i) in childarea" :key="child">
+              <span v-for="child in childarea" :key="child">
                 <span>
-                  <span class="cname">.div{{ i + 1 }}</span> {
-                  <span class="ckey">grid-area</span>:
-                  <span class="cprop">{{ child }}</span>; }
+                  <span class="ckey"> - </span>
+                  <span class="cprop">{{ child }}</span>
                 </span>
-                <br>
+                <br />
               </span>
             </span>
           </p>
         </div>
       </div>
-      <!--code-->
     </div>
   </div>
 </template>
@@ -103,12 +45,17 @@ export default {
   data() {
     return {
       codeWasCopied: false,
-      showHtml: false
+      showHtml: false,
     };
   },
   computed: {
-    ...mapState(["columngap", "rowgap", "childarea"]),
-    ...mapGetters(["rowTemplate", "colTemplate"])
+    ...mapState({
+      screen: (state) => state.screen,
+      columngap: (state) => state[state.screen].columngap,
+      rowgap: (state) => state[state.screen].rowgap,
+      childarea: (state) => state[state.screen].childarea,
+    }),
+    ...mapGetters(["rowTemplate", "colTemplate"]),
   },
   methods: {
     copy() {
@@ -139,8 +86,8 @@ export default {
     },
     toggleHtml() {
       this.showHtml = !this.showHtml;
-    }
-  }
+    },
+  },
 };
 </script>
 
