@@ -1,0 +1,31 @@
+{
+  "form": {
+    "columns": "Columns",
+    "rows": "Rows",
+    "columngap": "Column Gap",
+    "rowgap": "Row Gap",
+    "codebutton": "Generate code",
+    "project": "What does this project do?",
+    "reset": "Reset grid",
+    "units": "(in px)"
+  },
+  "modal": {
+    "header": {
+      "yourcode": "Your Grid Code",
+      "what": "What is this?"
+    },
+    "copy": {
+      "title": "Copy the code below:",
+      "clipboard": "Copy to clipboard!",
+      "clipboardSuccess": "Code copied!"
+    },
+    "button": "Done"
+  },
+  "explain": {
+    "paragraph1": "This application allows you to set the location of <strong>grid items</strong> within a <strong>grid container</strong>. You can choose how many columns and rows each item will occupy.",
+    "paragraph2": "To set up, simply click on the desired <strong>cell</strong> with which you want to start and then, without releasing the mouse button, move it to the <strong>cell</strong> where you want to end.",
+    "paragraph3": "After you have everything set up, click the <strong>Generate code</strong> button, copy the generated code and paste it wherever you need.",
+    "paragraph4": "Adjustment can be made for three screen sizes separately (small, medium, large).",
+    "paragraph5": "The number of <strong>columns</strong> in grid-container is fixed (4 columns for small screen, and 12 columns for medium and large). You can change the number of<strong>rows</strong>."
+  }
+}
