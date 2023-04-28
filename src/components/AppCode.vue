@@ -19,9 +19,6 @@
       <div id="code" ref="code">
         <div>
           <p>
-            <span class="cname">{{ screen }}Screen</span>
-          </p>
-          <p>
             <span v-if="childarea.length > 0">
               <span v-for="child in childarea" :key="child">
                 <span>
